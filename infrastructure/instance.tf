@@ -20,4 +20,5 @@ resource "aws_launch_template" "main" {
   instance_type   = "t2.micro"
   key_name        = "testapp"
   vpc_security_group_ids = [aws_security_group.sg-private-application.id]
+  user_data = file("install_nginx.sh")
 }

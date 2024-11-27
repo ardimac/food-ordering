@@ -18,8 +18,6 @@ git clone https://github.com/ardimac/food-ordering.git
 ## frontend
 cd /home/ubuntu/food-ordering/food-ordering-app/frontend/
 npm install
-URL="$(curl ifconfig.me)"
-sed -i "s/{{URL}}/$URL/g" /home/ubuntu/food-ordering/food-ordering-app/frontend/.env
 
 ## backend
 cd /home/ubuntu/food-ordering/food-ordering-app/backend/
