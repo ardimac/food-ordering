@@ -1,0 +1,13 @@
+[Unit]
+Description=App
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/bin/node /home/ubuntu/food-ordering/food-ordering-app/backend/server.js
+WorkingDirectory=/home/ubuntu/food-ordering/food-ordering-app/backend
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
