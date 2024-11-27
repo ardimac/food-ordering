@@ -1,27 +1,28 @@
-#!/bin/bash
+#!/bin/bash -i
 set -e
 
 ## NODE & NPM
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+source ~/.bashrc
 nvm install node
 
 NPM="$(which npm)"
-ln -s $NPM /usr/bin/npm
+sudo ln -s $NPM /usr/bin/npm
 
 NODE="$(which node)"
-ln -s $NODE /usr/bin/node
+sudo ln -s $NODE /usr/bin/node
 
 ## CLONE REPO
 git clone https://github.com/ardimac/food-ordering.git
 
 ## frontend
-cd food-ordering/food-ordering-app/frontend/
+cd /home/ubuntu/food-ordering/food-ordering-app/frontend/
 npm install
 URL="$(curl ifconfig.me)"
 sed -i "s/{{URL}}/$URL/g" /home/ubuntu/food-ordering/food-ordering-app/frontend/.env
 
 ## backend
-cd food-ordering/food-ordering-app/backend/
+cd /home/ubuntu/food-ordering/food-ordering-app/backend/
 npm init -y
 npm install express pg cors body-parser
 
@@ -39,3 +40,4 @@ sudo cp /home/ubuntu/food-ordering/config/nginx/food-ordering /etc/nginx/sites-a
 sudo ln -s /etc/nginx/sites-available/food-ordering /etc/nginx/sites-enabled/
 sudo systemctl start nginx
 sudo systemctl enable nginx
+sudo service nginx reload
