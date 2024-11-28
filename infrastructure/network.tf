@@ -148,7 +148,16 @@ resource "aws_security_group_rule" "sg-public-traffic-ingress-rule-a" {
   to_port           = 80
   protocol          = "tcp"                # Allowing all protocols, you can specify if needed
   security_group_id = aws_security_group.sg-public-traffic.id
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "sg-public-traffic-ingress-rule-b" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"                # Allowing all protocols, you can specify if needed
+  security_group_id = aws_security_group.sg-public-traffic.id
+  cidr_blocks       = ["0.0.0.0/0"]
 }
 
 resource "aws_security_group_rule" "sg-public-traffic-egress-rule-a" {
@@ -161,6 +170,16 @@ resource "aws_security_group_rule" "sg-public-traffic-egress-rule-a" {
   description       = "Allow outbound traffic to private security group"
 }
 
+resource "aws_security_group_rule" "sg-public-traffic-egress-rule-b" {
+  type              = "egress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"                # Allowing all protocols, you can specify if needed
+  security_group_id = aws_security_group.sg-public-traffic.id
+  cidr_blocks       = ["0.0.0.0/0"]
+  description       = "Allow outbound traffic to access internet"
+}
+
 resource "aws_security_group_rule" "sg-private-application-ingress-rule-a" {
   type              = "ingress"
   from_port         = 80
@@ -171,7 +190,6 @@ resource "aws_security_group_rule" "sg-private-application-ingress-rule-a" {
   description       = "Allow inbound traffic from public security group"
 }
 
-
 resource "aws_security_group_rule" "sg-private-application-ingress-rule-b" {
   type              = "ingress"
   from_port         = 443
@@ -180,6 +198,16 @@ resource "aws_security_group_rule" "sg-private-application-ingress-rule-b" {
   security_group_id = aws_security_group.sg-private-application.id
   source_security_group_id = aws_security_group.sg-public-traffic.id
   description       = "Allow inbound traffic from public security group"
+}
+
+resource "aws_security_group_rule" "sg-private-application-ingress-rule-c" {
+  type              = "ingress"
+  from_port         = 5432
+  to_port           = 5432
+  protocol          = "tcp"                # Allowing all protocols, you can specify if needed
+  security_group_id = aws_security_group.sg-private-application.id
+  cidr_blocks       = ["0.0.0.0/0"]
+  description       = "Allow internal access postgres"
 }
 
 resource "aws_security_group_rule" "sg-private-application-egress-rule-a" {
